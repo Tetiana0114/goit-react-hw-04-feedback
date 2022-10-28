@@ -1,0 +1,18 @@
+.list {
+    padding: 0;
+}
+.button {
+    font-size: 24px;
+    font-weight: 600;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 50px;
+    padding-right: 50px;    
+    margin-right: 20px;
+    color:  rgb(1, 50, 1);
+    background-color: rgb(212, 208, 208);
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
