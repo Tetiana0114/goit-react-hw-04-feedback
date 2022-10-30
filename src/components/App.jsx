@@ -1,65 +1,76 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import Section from 'components/Section';
 import FeedbackOptions from 'components/FeedbackOptions';
 import Notification from 'components/Notification';
 import Statistics from 'components/Statistics';
 
-export class App extends Component {
-  static defaultProps = {
-    initialValue: 0,
-  };
-  state = {
-    good: this.props.initialValue,
-    neutral: this.props.initialValue,
-    bad: this.props.initialValue,
-  };
 
-countTotalFeedback() {
-  return this.state.good + this.state.neutral + this.state.bad;
-};
-countPositiveFeedbackPercentage() {
-  const sum = this.countTotalFeedback();
-  return Math.round((this.state.good * 100) / sum);
-};
+export const App = () => {
+ const [good, setGood] = useState(0);
+ const [neutral, setNeutral] = useState(0);
+ const [bad, setBad] = useState(0);
 
-onSelectedBtn = e => { this.setState(prevState => ({
-  [e.target.name]: prevState[e.target.name] + 1,
-  }));
+ const state = {good, neutral, bad};
+
+// const countTotalFeedback= () => {
+//   return good + neutral + bad;
+// };
+
+const sum = good + neutral + bad;
+
+const countPositiveFeedbackPercentage = () => {
+  // const sum = countTotalFeedback();
+  return Math.round((good * 100) / sum);
 };
 
-render() {
-  const sum = this.countTotalFeedback();
-  const perCent = this.countPositiveFeedbackPercentage();
+const onSelectedBtn = (event) => {
+  switch(event.target.name) {
+    case 'good':
+    setGood(good + 1);
+    break;
+
+    case 'neutral':
+    setNeutral(neutral + 1);
+    break;
+
+    case 'bad':
+    setBad(bad + 1);
+    break;
+
+    default:
+    console.warn(`Not found.`);
+  }
+}
+
 return (
-    <div
-    style={{
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontSize: 24,
-      color: '#010101'
-    }}
-    >
-  <Section title="Please, leave feedback:">
-    <FeedbackOptions
-      options={this.state}
-      onLeaveFeedback={this.onSelectedBtn}
-    ></FeedbackOptions>
-  </Section>
+  <div
+  style={{
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 24,
+    color: '#010101'
+  }}
+  >
+<Section title="Please, leave feedback:">
+  <FeedbackOptions
+    options={state}
+    onLeaveFeedback={onSelectedBtn}
+  ></FeedbackOptions>
+</Section>
 
-  {sum === 0 ? ( <Notification message="There is no feedback!"/>) : 
-  (<Section title="Statistics:">
-    <Statistics
-      good={this.state.good}
-      neutral={this.state.neutral}
-      bad={this.state.bad}
-      total={sum}
-      positivePercentage={perCent}
-    ></Statistics>
-  </Section>
-      )}
-    </div>
-  );
-};
-};
+{sum === 0 ? ( <Notification message="There is no feedback!"/>) : 
+(<Section title="Statistics:">
+  <Statistics
+    good={good}
+    neutral={neutral}
+    bad={bad}
+    total={sum}
+    positivePercentage={countPositiveFeedbackPercentage()}
+  ></Statistics>
+</Section>
+    )}
+  </div>
+);
+}
